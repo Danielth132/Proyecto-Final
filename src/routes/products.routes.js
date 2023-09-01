@@ -25,6 +25,7 @@ router.get("/:pid", getProductById);
 
 /***   Carga producto ***/
 router.post("/", passportCall("jwt"), authorization("admin"), addProduct);
+router.post("/premiun", passportCall("jwt"), authorization("premiun"), addProduct);
 
 /*** Actualiza producto por ID ***/
 router.put(

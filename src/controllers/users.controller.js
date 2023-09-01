@@ -13,6 +13,63 @@ export async function getAllUsers(req, res) {
   }
 }
 
+
+export async function getAllUsersAdmin(req, res) {
+  let user = req.user;
+  let users = await usersService.getAllUsers();
+
+  //res.status(200).send({users});
+  //res.send({...users});
+  //res.send(users[0]);
+
+  res.render("gestionUsuarios", { users,user});
+  
+}
+
+export async function deleteUser(request, response){
+  const Userid = request.params.uid
+  try{
+    let user = await usersService.getUserById(Userid);
+    // Elimino carrito por id
+    await cartsService.deleteCartById(user.cart_id);
+
+    // Elimino usuario por id
+    await usersService.deleteUserById(Userid);
+
+    response.status(200).send({
+      status: "Success"});
+
+  }catch (err) {
+    response.status(400).send({ status: "Error", message: err });
+ ;}
+}
+
+export async function updateUserById(req, res) {
+  const id = req.params.uid
+  try {
+    
+    let info = req.body
+  
+    // Busco el usuario que se desea actualizar
+    let exist = await usersService.getUserById(id);
+    if (!exist) {
+      return res.status(409).send({
+        status: "Error",
+        message: "El id del producto que desea actualizar no se encuentra",
+      });
+    }
+
+    let usuario = await usersService.updateUserById(id,info)
+    res.status(200).send({
+      status: "Success",
+      message: `Se actualizó el usuario: ${id}`,
+    });
+
+  } catch (err) {
+    res.status(400).send({ status: "Error", message: err });
+  }
+}
+
 export async function login(req, res) {
   const userId = req.params.userId;
   try {

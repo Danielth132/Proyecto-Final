@@ -1,0 +1,30 @@
+<h1>Bienvenido {{user.last_name}}, {{user.first_name}} </h1>
+<h2>Listado de usuarios</h2>
+
+<table border="solid">
+  <tr>
+    <th>Nombre</th>
+    <th>E-mail</th>
+    <th>Rol</th>
+    <th>
+      {{!-- no funciona, no acepta DELETE --}}
+      <form action="/api/users/delete" method="DELETE">
+              <button type="submit" >Eliminar usuarios inactivos </button>
+        </form>
+    </th>
+  </tr>
+  {{#each users}}
+    <tr>
+      <td> {{this.fullName}}</td>
+      <td>{{this.email}}</td>
+      <td> {{this.role}}</td>
+      <td>
+        {{!-- no funciona,no tiene el id y no acepta DELETE --}}
+        <form action="/api/users/deleteOne/{{this._id}}" method="DELETE">
+              <button type="submit" >Eliminar Usuario </button>
+        </form>
+      </td>
+    </tr>
+  {{/each}}
+
+</table>
